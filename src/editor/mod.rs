@@ -1,7 +1,7 @@
 use druid::kurbo::Point;
 use druid::text::{FontDescriptor, Selection};
-use druid::widget::prelude::*;
 use druid::widget::TextBox;
+use druid::widget::prelude::*;
 use druid::{Key, KeyOrValue, Lens, Selector, WidgetPod};
 
 pub const APPLY_SELECTION: Selector<ByteRange> = Selector::new("rustpad.editor.apply-selection");
@@ -89,7 +89,13 @@ impl EditorWidget {
 }
 
 impl Widget<crate::app::AppState> for EditorWidget {
-    fn event(&mut self, ctx: &mut EventCtx, event: &Event, data: &mut crate::app::AppState, env: &Env) {
+    fn event(
+        &mut self,
+        ctx: &mut EventCtx,
+        event: &Event,
+        data: &mut crate::app::AppState,
+        env: &Env,
+    ) {
         match event {
             Event::Command(cmd) if cmd.is(APPLY_SELECTION) => {
                 if let Some(range) = cmd.get(APPLY_SELECTION) {
@@ -139,7 +145,13 @@ impl Widget<crate::app::AppState> for EditorWidget {
         }
     }
 
-    fn layout(&mut self, ctx: &mut LayoutCtx, bc: &BoxConstraints, data: &crate::app::AppState, env: &Env) -> Size {
+    fn layout(
+        &mut self,
+        ctx: &mut LayoutCtx,
+        bc: &BoxConstraints,
+        data: &crate::app::AppState,
+        env: &Env,
+    ) -> Size {
         let size = self.textbox.layout(ctx, bc, &data.text, env);
         self.textbox.set_origin(ctx, Point::ORIGIN);
         size
@@ -155,7 +167,11 @@ fn count_chars(text: &str, byte_index: usize) -> usize {
 }
 
 fn line_from_bytes(text: &str, byte_index: usize) -> usize {
-    text[..byte_index.min(text.len())].chars().filter(|&ch| ch == '\n').count() + 1
+    text[..byte_index.min(text.len())]
+        .chars()
+        .filter(|&ch| ch == '\n')
+        .count()
+        + 1
 }
 
 fn column_from_bytes(text: &str, byte_index: usize) -> usize {
